@@ -1,0 +1,16 @@
+☐ Blog list 
+    ☐ Reducer
+        ☐ isErrorMessage ili errorMessage
+        ☐ ovdje nema potrebe za 404.
+    ☐ Reorganizirati, tako da budu skupa Blog List reduceri i action creatori. Da li i Blog List komponenta budu s njima skupa?
+    ☐ Napisati action creatore
+    ☐ Da li da rastavim Blog List na container i presentation komponentu?
+☐ top level reducer
+    ☐ uzeti blog list reducer
+    ☐ normalize? ako da, to se radi u action creatoru.
+☐ configureStore
+    ☐ middleware: thunk, logger. 
+    ☐ history middleware, za što on služi?
+☐ Provider
+☐ Složiti connect(...)(BlogList)
+☐ Link comments to blog posts
