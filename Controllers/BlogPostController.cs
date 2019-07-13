@@ -22,6 +22,9 @@ public class BlogPostController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(Guid id)
     {
-        return Ok(_ctx.BlogPosts.Include(bp => bp.Author).SingleOrDefault(bp => bp.Id == id));
+        BlogPost blogPost = _ctx.BlogPosts.Include(bp => bp.Author).SingleOrDefault(bp => bp.Id == id);
+        if (blogPost == null)
+            return NotFound();
+        return Ok(blogPost);
     }
 }

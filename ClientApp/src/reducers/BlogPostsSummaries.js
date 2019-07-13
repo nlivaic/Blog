@@ -6,6 +6,9 @@ const receiveBlogPostsType = "RECEIVE_BLOG_POSTS";
 export const actionCreators = {
   requestBlogPosts: () => dispatch => {
     dispatch({ type: requestBlogPostsType });
+    fetch("/api/BlogPost")
+      .then(data => data.json())
+      .then(data => dispatch({ type: receiveBlogPostsType, response: data }));
   }
 };
 
@@ -21,7 +24,7 @@ const byId = (state = {}, action) => {
 const blogPostList = (state = [], action) => {
   switch (action.type) {
     case receiveBlogPostsType:
-      return [...state];
+      return [...action.response];
     default:
       return state;
   }
@@ -39,3 +42,8 @@ const isLoading = (state = false, action) => {
 };
 
 export default combineReducers({ byId, blogPostList, isLoading });
+
+// Selectors
+export const getAllBlogPostsSummaries = state => state.blogPostList;
+
+export const getIsLoading = state => state.isLoading;

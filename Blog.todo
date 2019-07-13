@@ -2,15 +2,23 @@
     ☐ Reducer
         ☐ isErrorMessage ili errorMessage
         ☐ ovdje nema potrebe za 404.
-    ☐ Reorganizirati, tako da budu skupa Blog List reduceri i action creatori. Da li i Blog List komponenta budu s njima skupa?
-    ☐ Napisati action creatore
-    ☐ Da li da rastavim Blog List na container i presentation komponentu?
+    ✔ Reorganizirati, tako da budu skupa Blog List reduceri i action creatori. Da li i Blog List komponenta budu s njima skupa? @done (2019-7-10 23:20:00)
+    ✔ Napisati action creatore @done (2019-7-10 23:20:01)
+    
 ☐ top level reducer
     ☐ uzeti blog list reducer
     ☐ normalize? ako da, to se radi u action creatoru.
 ☐ configureStore
-    ☐ middleware: thunk, logger. 
+    ✔ middleware: thunk, logger. @done (2019-7-10 23:20:12)
     ☐ history middleware, za što on služi?
-☐ Provider
-☐ Složiti connect(...)(BlogList)
-☐ Link comments to blog posts
+✔ Provider @done (2019-7-10 23:20:15)
+☐ BlogList komponenta
+    ✔ Složiti connect(...)(BlogList) @done (2019-7-10 23:20:16)
+    ✔ Da li da rastavim Blog List na container i presentation komponentu? @done (2019-7-11 23:30:43)
+    ✔ Dodati spinner @done (2019-7-11 23:31:57)
+    ✔ Povući podatke u componentDidMount @done (2019-7-11 23:31:58)
+    ✔ Prezentirati podatke. @done (2019-7-11 23:31:59)
+☐ BlogPostData/BlogPost komponente
+    ☐ Linkati autora.
+    ☐ Napraviti Back gumb, natrag na summaries. Vidjeti da li puca?
+☐ Db: Link comments to blog posts

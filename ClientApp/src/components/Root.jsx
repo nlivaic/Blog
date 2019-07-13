@@ -1,14 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter, Route } from "react-router-dom";
-import BlogPostList from "./BlogPostList";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import BlogPostsList from "./BlogPostsList";
+import BlogPostData from "./BlogPostData";
 
 const Root = ({ store }) => {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Route to="/" exact component={BlogPostList} />
-      </BrowserRouter>
+      <Router>
+        <Switch>
+          <Route path="/" exact component={BlogPostsList} />
+          <Route path="/BlogPost/:id" exact component={BlogPostData} />
+        </Switch>
+      </Router>
     </Provider>
   );
 };
