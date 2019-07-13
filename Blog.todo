@@ -22,3 +22,6 @@
     ☐ Linkati autora.
     ☐ Napraviti Back gumb, natrag na summaries. Vidjeti da li puca?
 ☐ Db: Link comments to blog posts
+☐ File naming.
+    ☐ All JS files should be camelCase.
+    ☐ All React files should be PascalCase.

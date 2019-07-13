@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import * as api from "../api/blogPostsSummaries";
 
 const requestBlogPostsType = "REQUEST_BLOG_POSTS";
 const receiveBlogPostsType = "RECEIVE_BLOG_POSTS";
@@ -6,8 +7,8 @@ const receiveBlogPostsType = "RECEIVE_BLOG_POSTS";
 export const actionCreators = {
   requestBlogPosts: () => dispatch => {
     dispatch({ type: requestBlogPostsType });
-    fetch("/api/BlogPost")
-      .then(data => data.json())
+    api
+      .getBlogPostsSummaries()
       .then(data => dispatch({ type: receiveBlogPostsType, response: data }));
   }
 };
