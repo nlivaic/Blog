@@ -1,7 +1,7 @@
 import { handleHttpError } from "./HttpError";
 
-export const getBlogPost = id => {
-  return fetch(`/api/BlogPost/${id}`)
+export const getBlogPostComments = blogPostId => {
+  return fetch(`/api/BlogPostComment?blogPostId=${blogPostId}`)
     .then(handleHttpError)
     .then(response => response.json());
 };

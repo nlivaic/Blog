@@ -1,32 +1,29 @@
 import { combineReducers } from "redux";
-import * as api from "../api/blogPost";
+import * as api from "../api/blogPostComments";
 
-const requestBlogPostType = "REQUEST_BLOG_POST";
-const receiveBlogPostType = "RECEIVE_BLOG_POST";
-const notFoundBlogPostType = "NOT_FOUND_BLOG_POST";
-const errorType = "ERROR_BLOG_POST";
-const initialState = {
-  title: "",
-  text: "",
-  author: { id: "", name: "" }
-};
+const requestBlogPostCommentsType = "REQUEST_BLOG_POST_COMMENTS";
+const receiveBlogPostCommentsType = "RECEIVE_BLOG_POST_COMMENTS";
+const notFoundBlogPostCommentsType = "NOT_FOUND_BLOG_POST_COMMENTS";
+const errorType = "ERROR_BLOG_POST_COMMENTS";
 const initialErrorState = { isError: false, message: "" };
 
 export const actionCreators = {
-  requestBlogPost: id => dispatch => {
-    dispatch({ type: requestBlogPostType });
+  requestBlogPostComments: blogPostId => dispatch => {
+    dispatch({ type: requestBlogPostCommentsType });
     api
-      .getBlogPost(id)
-      .then(data => dispatch({ type: receiveBlogPostType, response: data }))
+      .getBlogPostComments(blogPostId)
+      .then(data =>
+        dispatch({ type: receiveBlogPostCommentsType, response: data })
+      )
       .catch(error => {
         switch (error.status) {
           case 404:
-            dispatch({ type: notFoundBlogPostType });
+            dispatch({ type: notFoundBlogPostCommentsType });
             break;
           default:
             dispatch({
               type: errorType,
-              response: `An error occurred trying to fetch blog post ${id}: ${
+              response: `An error occurred trying to fetch comments for blog post ${blogPostId}: ${
                 error.message
               }.`
             });
@@ -36,9 +33,9 @@ export const actionCreators = {
   }
 };
 
-const blogPost = (state = initialState, action) => {
+const comments = (state = [], action) => {
   switch (action.type) {
-    case receiveBlogPostType:
+    case receiveBlogPostCommentsType:
       return action.response;
     default:
       return state;
@@ -46,11 +43,11 @@ const blogPost = (state = initialState, action) => {
 };
 
 const isLoading = (state = false, action) => {
-  switch (action.type) {
-    case requestBlogPostType:
+  switch (state.type) {
+    case requestBlogPostCommentsType:
       return true;
-    case receiveBlogPostType:
-    case notFoundBlogPostType:
+    case receiveBlogPostCommentsType:
+    case notFoundBlogPostCommentsType:
     case errorType:
       return false;
     default:
@@ -60,9 +57,9 @@ const isLoading = (state = false, action) => {
 
 const isNotFound = (state = false, action) => {
   switch (action.type) {
-    case notFoundBlogPostType:
+    case notFoundBlogPostCommentsType:
       return true;
-    case receiveBlogPostType:
+    case receiveBlogPostCommentsType:
       return false;
     default:
       return state;
@@ -76,17 +73,17 @@ const error = (state = initialErrorState, action) => {
         isError: true,
         message: action.response
       };
-    case receiveBlogPostType:
+    case receiveBlogPostCommentsType:
       return initialErrorState;
     default:
       return state;
   }
 };
 
-export default combineReducers({ blogPost, isLoading, isNotFound, error });
+export default combineReducers({ comments, isLoading, isNotFound, error });
 
-// selectors
-export const getBlogPost = state => state.blogPost;
+// Selectors
+export const getComments = state => state.comments;
 
 export const getIsLoading = state => state.isLoading;
 

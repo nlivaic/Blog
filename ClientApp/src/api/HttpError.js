@@ -6,4 +6,11 @@ class HttpError extends Error {
   }
 }
 
+export const handleHttpError = response => {
+  if (!response.ok) {
+    throw new HttpError(response.status, response.statusText);
+  }
+  return response;
+};
+
 export default HttpError;
