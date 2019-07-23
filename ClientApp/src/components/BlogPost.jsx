@@ -5,7 +5,7 @@ const BlogPost = ({ blogPost }) => {
   return (
     <div>
       <h3>{blogPost.title}</h3>
-      <Link to="/author">{blogPost.author.name}</Link>
+      <Link to={`/Author/${blogPost.author.id}`}>{blogPost.author.name}</Link>
       <p>{blogPost.text}</p>
     </div>
   );

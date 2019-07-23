@@ -6,7 +6,7 @@ const BlogPostComments = ({ comments }) => {
     <div>
       {comments.map(c => (
         <div key={c.id}>
-          {c.text} by <Link to={`author/${c.author.id}`}>{c.author.name}</Link>
+          {c.text} by <Link to={`/Author/${c.author.id}`}>{c.author.name}</Link>
         </div>
       ))}
     </div>

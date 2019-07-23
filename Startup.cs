@@ -25,11 +25,11 @@ namespace Blog
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                // .AddJsonOptions(options =>
-                // {
-                //     var settings = options.SerializerSettings;
-                //     settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                // })
+                .AddJsonOptions(options =>
+                {
+                    var settings = options.SerializerSettings;
+                    settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                })
                 ;
 
             // In production, the React files will be served from this directory

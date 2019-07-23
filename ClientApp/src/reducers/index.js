@@ -2,11 +2,13 @@ import { combineReducers } from "redux";
 import blogPostsSummaries, * as fromBlogPostsSummaries from "./BlogPostsSummaries";
 import blogPost, * as fromBlogPost from "./BlogPost";
 import blogPostComments, * as fromBlogPostComments from "./BlogPostComments";
+import author, * as fromAuthor from "./Author";
 
 export default combineReducers({
   blogPostsSummaries,
   blogPost,
-  blogPostComments
+  blogPostComments,
+  author
 });
 
 // Top-level selectors - Blog Post Summaries
@@ -37,5 +39,19 @@ export const getBlogPostCommentsIsLoading = state =>
 export const getBlogPostCommentsIsNotFound = state =>
   fromBlogPostComments.getIsNotFound(state.blogPostComments);
 
+export const getBlogPostIsNoComments = state =>
+  fromBlogPostComments.getIsNoComments(state.blogPostComments);
+
 export const getBlogPostCommentsError = state =>
   fromBlogPostComments.getError(state.blogPostComments);
+
+// Top-level selectors - Author
+export const getAuthor = state => fromAuthor.getAuthor(state.author);
+
+export const getAuthorIsLoading = state =>
+  fromAuthor.getIsLoading(state.author);
+
+export const getAuthorIsNotFound = state =>
+  fromAuthor.getIsNotFound(state.author);
+
+export const getAuthorError = state => fromAuthor.getError(state.author);

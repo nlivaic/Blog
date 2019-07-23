@@ -1,32 +1,44 @@
 ☐ Blog list 
     ☐ Reducer
         ☐ isErrorMessage ili errorMessage
-        ☐ ovdje nema potrebe za 404.
+        ✔ ovdje nema potrebe za 404. @done (2019-7-15 23:39:17)
     ✔ Reorganizirati, tako da budu skupa Blog List reduceri i action creatori. Da li i Blog List komponenta budu s njima skupa? @done (2019-7-10 23:20:00)
     ✔ Napisati action creatore @done (2019-7-10 23:20:01)
     
 ☐ top level reducer
-    ☐ uzeti blog list reducer
+    ✔ uzeti blog list reducer @done (2019-7-15 23:39:10)
     ☐ normalize? ako da, to se radi u action creatoru.
 ☐ configureStore
     ✔ middleware: thunk, logger. @done (2019-7-10 23:20:12)
     ☐ history middleware, za što on služi?
 ✔ Provider @done (2019-7-10 23:20:15)
-☐ BlogList komponenta
+✔ BlogList komponenta @done (2019-7-15 23:39:04)
     ✔ Složiti connect(...)(BlogList) @done (2019-7-10 23:20:16)
     ✔ Da li da rastavim Blog List na container i presentation komponentu? @done (2019-7-11 23:30:43)
     ✔ Dodati spinner @done (2019-7-11 23:31:57)
     ✔ Povući podatke u componentDidMount @done (2019-7-11 23:31:58)
     ✔ Prezentirati podatke. @done (2019-7-11 23:31:59)
-☐ BlogPostData/BlogPost komponente
-    ☐ Linkati autora.
+✔ BlogPostData/BlogPost komponente @done (2019-7-18 23:47:53)
+    ✔ Linkati autora. @done (2019-7-18 23:47:53)
     ✔ Napraviti Back gumb, natrag na summaries. Vidjeti da li puca? @done (2019-7-13 18:29:53)
-    ☐ blogPost.comments -> ovakvu strukturu dobivam sa backenda. Ja ju samo oponašam na front endu u initial state-u, ali u suštini svaka promjena na API modelu će se odmah reflektirati na moj state.
-       Možda bih trebao razdvojiti reducere da ovo shendlam na održiviji način?
-✔ Db: Link comments to blog posts @done (2019-7-14 16:53:53)
-☐ API: /comments/
-    ☐ /api/BlogPostComment/${blogPostId} nije ok. {blogPostId} nije identifikator commenta nego filter, pa treba biti kao querystring.
+    ✔ blogPost.comments -> ovakvu strukturu dobivam sa backenda. Ja ju samo oponašam na front endu u initial state-u, ali u suštini svaka promjena na API modelu će se odmah reflektirati na moj state. Možda bih trebao razdvojiti reducere da ovo shendlam na održiviji način? @done (2019-7-15 23:38:46)
+        ✔ Reduceri razdvojeni. Također su i container componente razdvojene (blog post i blog post comments). @done (2019-7-15 23:38:45)
+✔ Bug: go to /, go to blog post, fetch comments, go back to /, go to another blog post - previous post's comments are loaded. @done (2019-7-23 22:55:15)
+    ✔ Solution: componentWillUpdate() -> reset blog post comments state. @done (2019-7-23 22:55:15)
+✔ Author: @done (2019-7-24 00:37:14)
+    ✔ AuthorData.jsx @done (2019-7-24 00:37:13)
+    ✔ Author.jsx @done (2019-7-24 00:37:14)
+    ✔ Route @done (2019-7-18 23:59:32)
+    ✔ Link to author @done (2019-7-18 23:59:31)
+                                         ✔ Db: Link comments to blog posts @done (2019-7-14 16:53:53)
+✔ API: /comments/ @done (2019-7-15 23:38:10)
+    ✔ /api/BlogPostComment/${blogPostId} nije ok. {blogPostId} nije identifikator commenta nego filter, pa treba biti kao querystring. @done (2019-7-15 23:38:09)
+☐ "Back" links
+    ☐ Case: blog summaries -> blog -> comments -> author -> back -> you end up on blog summaries, not on author. Try to find a way to get back where you were. Routing and History?
 ☐ File naming.
     ☐ All JS files should be camelCase.
     ☐ All React files should be PascalCase.
+☐ Authentication i authorization.
 ☐ HTTPS, HSTS
+☐ VPN
+☐ Chocolatey

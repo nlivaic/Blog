@@ -15,6 +15,7 @@ namespace Blog.Models
             Id = Guid.NewGuid();
             Name = name;
         }
+
         // public Author(string name, ICollection<BlogPost> blogPosts)
         // {
         //     Id = Guid.NewGuid();
@@ -29,5 +30,6 @@ namespace Blog.Models
 
         public Guid Id { get; private set; }
         public string Name { get; private set; }
+        public List<BlogPost> BlogPosts { get; private set; }
     }
 }
