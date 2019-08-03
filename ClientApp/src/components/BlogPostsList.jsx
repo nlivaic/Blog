@@ -6,7 +6,7 @@ import {
   getAllBlogPostsSummaries,
   getBlogPostsSummariesIsLoading
 } from "../reducers";
-import BlogPost from "./BlogPostSummary";
+import BlogPostSummary from "./BlogPostSummary";
 
 class BlogPostsList extends Component {
   componentDidMount() {
@@ -20,7 +20,7 @@ class BlogPostsList extends Component {
     return (
       <div>
         {blogPostsList.map(bp => (
-          <BlogPost key={bp.id} blogPost={bp} />
+          <BlogPostSummary key={bp.id} blogPost={bp} showAuthor={true} />
         ))}
       </div>
     );

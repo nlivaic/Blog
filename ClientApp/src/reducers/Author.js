@@ -11,7 +11,7 @@ const initialState = {
 };
 const initialErrorState = { isError: false, message: "" };
 
-export const actions = {
+export const actionCreators = {
   requestAuthor: id => dispatch => {
     dispatch({ type: requestAuthorType });
     api

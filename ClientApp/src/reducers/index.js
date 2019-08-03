@@ -1,15 +1,18 @@
 import { combineReducers } from "redux";
+import { connectRouter } from "connected-react-router";
 import blogPostsSummaries, * as fromBlogPostsSummaries from "./BlogPostsSummaries";
 import blogPost, * as fromBlogPost from "./BlogPost";
 import blogPostComments, * as fromBlogPostComments from "./BlogPostComments";
 import author, * as fromAuthor from "./Author";
 
-export default combineReducers({
-  blogPostsSummaries,
-  blogPost,
-  blogPostComments,
-  author
-});
+export default history =>
+  combineReducers({
+    router: connectRouter(history),
+    blogPostsSummaries,
+    blogPost,
+    blogPostComments,
+    author
+  });
 
 // Top-level selectors - Blog Post Summaries
 export const getAllBlogPostsSummaries = state =>

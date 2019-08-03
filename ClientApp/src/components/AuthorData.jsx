@@ -1,3 +1,4 @@
+import { goBack } from "connected-react-router";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
@@ -7,7 +8,7 @@ import {
   getAuthorError
 } from "../reducers";
 import { bindActionCreators } from "redux";
-import { actions } from "../reducers/Author";
+import { actionCreators } from "../reducers/Author";
 import NotFound from "./NotFound";
 import BlogPostSummary from "./BlogPostSummary";
 
@@ -17,7 +18,7 @@ class AuthorData extends Component {
     requestAuthor(id);
   }
   render() {
-    const { author, isLoading, isNotFound } = this.props;
+    const { author, isLoading, isNotFound, goBack } = this.props;
     if (isLoading) return <p>Loading...</p>;
     if (isNotFound) return <NotFound />;
     return (
@@ -26,10 +27,11 @@ class AuthorData extends Component {
         {author.blogPostSummaries.map(blogPost => (
           <BlogPostSummary
             key={blogPost.id}
-            hideAuthor={true}
+            showAuthor={false}
             blogPost={blogPost}
           />
         ))}
+        <button onClick={goBack}>Back</button>
       </div>
     );
   }
@@ -45,7 +47,13 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  let actions = bindActionCreators(actionCreators, dispatch);
+  actions["goBack"] = () => dispatch(goBack());
+  return actions;
+};
+
 export default connect(
   mapStateToProps,
-  dispatch => bindActionCreators(actions, dispatch)
+  mapDispatchToProps
 )(AuthorData);

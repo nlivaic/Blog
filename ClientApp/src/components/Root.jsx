@@ -1,20 +1,21 @@
+import { ConnectedRouter } from "connected-react-router";
 import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import BlogPostsList from "./BlogPostsList";
 import BlogPostData from "./BlogPostData";
 import AuthorData from "./AuthorData";
 
-const Root = ({ store }) => {
+const Root = ({ store, history }) => {
   return (
     <Provider store={store}>
-      <Router>
+      <ConnectedRouter history={history}>
         <Switch>
           <Route path="/" exact component={BlogPostsList} />
           <Route path="/BlogPost/:id" exact component={BlogPostData} />
           <Route path="/Author/:id" exact component={AuthorData} />
         </Switch>
-      </Router>
+      </ConnectedRouter>
     </Provider>
   );
 };

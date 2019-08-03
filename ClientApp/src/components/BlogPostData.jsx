@@ -1,7 +1,8 @@
+import { goBack } from "connected-react-router";
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {
   getBlogPostIsLoading,
   getBlogPost,
@@ -22,7 +23,7 @@ class BlogPostData extends Component {
   }
 
   render() {
-    const { isLoading, blogPost, isNotFound, error } = this.props;
+    const { isLoading, blogPost, isNotFound, goBack, error } = this.props;
     if (isLoading) {
       return <p>Loading...</p>;
     }
@@ -37,7 +38,8 @@ class BlogPostData extends Component {
       <div>
         <BlogPost blogPost={blogPost} />
         <BlogPostCommentsData blogPostId={blogPost.id} />
-        <Link to="/">Back</Link>
+        <br />
+        <button onClick={goBack}>Back</button>
       </div>
     );
   }
@@ -54,9 +56,16 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  let actions = bindActionCreators(blogPostActionCreators, dispatch);
+  actions["goBack"] = () => dispatch(goBack());
+  return actions;
+};
+
 export default withRouter(
   connect(
     mapStateToProps,
-    dispatch => bindActionCreators(blogPostActionCreators, dispatch)
+    //dispatch => bindActionCreators(blogPostActionCreators, dispatch)
+    mapDispatchToProps
   )(BlogPostData)
 );
