@@ -37,16 +37,18 @@
     ✔ Case: blog summaries -> blog -> comments -> author -> back -> you end up on blog summaries, not on author. Try to find a way to get back where you were. Routing and History? @done (2019-8-2 22:51:32)
         ✔ Test this. @done (2019-8-2 22:51:31)
 ✔ Clean up various unused things. Look at compile warnings in browser console. @done (2019-8-2 22:51:33)
+☐ Paging
 ☐ File naming.
     ☐ All JS files should be camelCase.
     ☐ All React files should be PascalCase.
 ✔ Database migration @done (2019-8-3 11:56:08)
     ✔ MySql @done (2019-8-3 11:56:06)
     ✔ Enable sensitive logging only during development. @done (2019-8-3 11:56:07)
-☐ Paging
-☐ Deployment
+☐ Security
+    ☐ HTTPS
+    ☐ HSTS
 ☐ Authentication i authorization.
-☐ HTTPS, HSTS
 ☐ Database connection string password - place in user secret store. Explore other possibilities.
+☐ Deployment
 ☐ VPN
 ☐ Chocolatey
