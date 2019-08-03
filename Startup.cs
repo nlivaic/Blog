@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pomelo.EntityFrameworkCore;
 using Blog.Models;
 using Newtonsoft.Json;
 
@@ -12,12 +13,14 @@ namespace Blog
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public IConfiguration _configuration { get; }
+        public IHostingEnvironment _environment { get; }
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        {
+            _configuration = configuration;
+            _environment = environment;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -29,16 +32,20 @@ namespace Blog
                 {
                     var settings = options.SerializerSettings;
                     settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                })
-                ;
-
+                });
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
-
-            services.AddDbContext<BlogContext>(options => options.UseInMemoryDatabase(databaseName: "Blog"));
+            services.AddDbContext<BlogContext>(options =>
+            {
+                options.UseMySql(_configuration["ConnectionStrings:BlogDatabase"]);
+                if (_environment.IsDevelopment())
+                {
+                    options.EnableSensitiveDataLogging(true);
+                }
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
