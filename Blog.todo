@@ -45,8 +45,15 @@
     ✔ MySql @done (2019-8-3 11:56:06)
     ✔ Enable sensitive logging only during development. @done (2019-8-3 11:56:07)
 ☐ Security
-    ☐ HTTPS
+    ✔ HTTPS @done (2019-8-5 14:08:18)
     ☐ HSTS
+        ☐ Preload HSTS
+    ☐ XSRF
+        ☐ This is a cookie exploit.
+        ☐ After establishing login and authentication, see if it is a factor in React-WebAPI communication.
+    ☐ XSS
+        ☐ Sanitize outputs that originally came from the front-end.
+        ☐ react-sanitized-html
 ☐ Authentication i authorization.
 ☐ Database connection string password - place in user secret store. Explore other possibilities.
 ☐ Deployment
