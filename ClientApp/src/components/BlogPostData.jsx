@@ -1,29 +1,46 @@
 import { goBack } from "connected-react-router";
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { bindActionCreators } from "redux";
 import {
-  getBlogPostIsLoading,
   getBlogPost,
-  getBlogPostIsNotFound,
+  getBlogPostComments,
   getBlogPostError,
-  getBlogPostComments
+  getBlogPostIsEditing,
+  getBlogPostIsLoading,
+  getBlogPostIsNotFound,
+  getBlogPostIsOwner,
+  getIsRequestingSaveBlogPost
 } from "../reducers";
 import { actionCreators as blogPostActionCreators } from "../reducers/BlogPost";
 import BlogPost from "./BlogPost";
-import NotFound from "./NotFound";
-import Error from "./Error";
 import BlogPostCommentsData from "./BlogPostCommentsData";
+import BlogPostEdit from "./BlogPostEdit";
+import Error from "./Error";
+import NotFound from "./NotFound";
 
 class BlogPostData extends Component {
   componentDidMount() {
-    const { requestBlogPost, id } = this.props;
+    const { id, requestBlogPost } = this.props;
     requestBlogPost(id);
   }
 
   render() {
-    const { isLoading, blogPost, isNotFound, goBack, error } = this.props;
+    const {
+      blogPost,
+      cancelBlogPostEditing,
+      editBlogPost,
+      error,
+      goBack,
+      id,
+      isEditing,
+      isLoading,
+      isNotFound,
+      isOwner,
+      isSaving,
+      saveBlogPost
+    } = this.props;
     if (isLoading) {
       return <p>Loading...</p>;
     }
@@ -36,10 +53,26 @@ class BlogPostData extends Component {
 
     return (
       <div>
-        <BlogPost blogPost={blogPost} />
+        {!isEditing && (
+          <BlogPost
+            blogPost={blogPost}
+            editBlogPost={editBlogPost}
+            isOwner={isOwner}
+          />
+        )}
+        {isEditing && (
+          <BlogPostEdit
+            blogPost={blogPost}
+            cancelBlogPostChanges={cancelBlogPostEditing}
+            id={id}
+            isOwner={isOwner}
+            isSaving={isSaving}
+            saveBlogPost={saveBlogPost}
+          />
+        )}
         <BlogPostCommentsData blogPostId={blogPost.id} />
         <br />
-        <button onClick={goBack}>Back</button>
+        <button onClick={() => goBack()}>Back</button>
       </div>
     );
   }
@@ -47,12 +80,15 @@ class BlogPostData extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    blogPost: getBlogPost(state),
+    comments: getBlogPostComments(state),
+    error: getBlogPostError(state),
     id: ownProps.match.params.id,
+    isEditing: getBlogPostIsEditing(state),
     isLoading: getBlogPostIsLoading(state),
     isNotFound: getBlogPostIsNotFound(state),
-    error: getBlogPostError(state),
-    blogPost: getBlogPost(state),
-    comments: getBlogPostComments(state)
+    isOwner: getBlogPostIsOwner(state),
+    isSaving: getIsRequestingSaveBlogPost(state)
   };
 };
 

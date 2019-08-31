@@ -1,7 +1,6 @@
 using System;
-using Blog.Models;
 
-namespace Blog.ViewModels
+namespace Blog.Models.ViewModels
 {
     public class BlogPostSummary
     {

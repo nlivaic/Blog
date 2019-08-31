@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Blog.Models;
-using Blog.ViewModels;
+using Blog.Models.ViewModels;
 
-namespace Namespace
+namespace Blog.Controllers
 {
     [Route("api/[controller]")]
     public class AuthorController : ControllerBase

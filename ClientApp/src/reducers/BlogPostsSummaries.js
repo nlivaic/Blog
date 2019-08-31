@@ -9,7 +9,7 @@ export const actionCreators = {
     dispatch({ type: requestBlogPostsType });
     api
       .getBlogPostsSummaries()
-      .then(data => dispatch({ type: receiveBlogPostsType, response: data }));
+      .then(data => dispatch({ response: data, type: receiveBlogPostsType }));
   }
 };
 
@@ -33,16 +33,16 @@ const blogPostList = (state = [], action) => {
 
 const isLoading = (state = false, action) => {
   switch (action.type) {
-    case requestBlogPostsType:
-      return true;
     case receiveBlogPostsType:
       return false;
+    case requestBlogPostsType:
+      return true;
     default:
       return state;
   }
 };
 
-export default combineReducers({ byId, blogPostList, isLoading });
+export default combineReducers({ blogPostList, byId, isLoading });
 
 // Selectors
 export const getAllBlogPostsSummaries = state => state.blogPostList;

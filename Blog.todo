@@ -44,8 +44,28 @@
 ✔ Database migration @done (2019-8-3 11:56:08)
     ✔ MySql @done (2019-8-3 11:56:06)
     ✔ Enable sensitive logging only during development. @done (2019-8-3 11:56:07)
+☐ Authentication
+    ✔ API @done (2019-8-25 20:59:16)
+    ✔ Redux reducer @done (2019-8-25 20:59:17)
+    ✔ React components @done (2019-8-25 20:59:17)
+    ☐ Forgot password
+    ☐ Two factor authentication
+    ☐ Lockout
+☐ Authorization
+    ☐ Claims
+        ☐ Type: "Author", "Admin"
+    ☐ Policy: "AuthorType", "AdminType"
+    ☐ How to authorize based on claims?
+        ☐ [Authorize(Policy("AuthorType"))]
+☐ Turn all authors into identity users.
+    ☐ Find a way to map identity users onto authors. AutoMapper?
+☐ Edit blog posts
+    ☐ Create entry fields when authenticated.
+☐ If you try to post/put while w/o cookie, you will get a 401 back. This causes HttpError to be thrown by your api.js, but this is never caught. Fix this by present a pleasant message.
+☐ Često moramo ručno vaditi logiranog usera i njegov Id. Možemo to nekako preko Model Bindinga automatizirati?
 ☐ Security
     ✔ HTTPS @done (2019-8-5 14:08:18)
+    ☐ DPAPI, encryption
     ☐ HSTS
         ☐ Preload HSTS
     ☐ XSRF
@@ -54,8 +74,13 @@
     ☐ XSS
         ☐ Sanitize outputs that originally came from the front-end.
         ☐ react-sanitized-html
-☐ Authentication i authorization.
+    ☐ Content-Security Policy and React
+        ☐ Requires a more in-depth knowledge of React. Consult https://medium.com/@nrshahri/csp-cra-324dd83fe5ff.
+    ☐ Click jacking
+    ☐ npm security
 ☐ Database connection string password - place in user secret store. Explore other possibilities.
 ☐ Deployment
+    ☐ Try out production React
+    ☐ Try out production ASP.NET Core
 ☐ VPN
 ☐ Chocolatey

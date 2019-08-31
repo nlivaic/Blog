@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Blog.ViewModels
+namespace Blog.Models.ViewModels
 {
     public class AuthorSummary
     {

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -5,9 +6,13 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Pomelo.EntityFrameworkCore;
 using Blog.Models;
+using Blog.Models.Identity;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
+using System.Net;
+using System.Threading.Tasks;
+using System;
 
 namespace Blog
 {
@@ -38,6 +43,28 @@ namespace Blog
             {
                 configuration.RootPath = "ClientApp/build";
             });
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseMySql(_configuration["ConnectionStrings:BlogDatabase"]));
+            services
+                .AddIdentity<BlogIdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddDefaultTokenProviders();
+            services.AddAuthentication();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnRedirectToLogin = ctx =>
+                    {
+                        if (ctx.Request.Path.StartsWithSegments("/api"))
+                        {
+                            ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        }
+                        return Task.FromResult(0);
+                    }
+                };
+                // options.Cookie.Expiration = TimeSpan.FromDays(365);
+                options.Cookie.MaxAge = TimeSpan.FromDays(365);
+            });
             services.AddDbContext<BlogContext>(options =>
             {
                 options.UseMySql(_configuration["ConnectionStrings:BlogDatabase"]);
@@ -46,6 +73,7 @@ namespace Blog
                     options.EnableSensitiveDataLogging(true);
                 }
             });
+            services.AddAuthorization(options => options.AddPolicy("authorPolicy", policy => policy.RequireClaim("userType", "author")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +91,7 @@ namespace Blog
 
             app.UseHttpsRedirection();
             // app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseSpaStaticFiles();
 
             app.UseMvc(routes =>
