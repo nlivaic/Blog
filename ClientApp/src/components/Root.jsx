@@ -2,23 +2,27 @@ import { ConnectedRouter } from "connected-react-router";
 import React from "react";
 import { Provider } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import BlogPostsList from "./BlogPostsList";
-import BlogPostData from "./BlogPostData";
-import AuthorData from "./AuthorData";
 import AccountData from "./AccountData";
+import AuthorData from "./AuthorData";
+import BlogPostData from "./BlogPostData";
+import BlogPostsList from "./BlogPostsList";
+import NewBlogPost from "./NewBlogPost";
+import NewBlogPostData from "./NewBlogPostData";
 import RegisterNewUserData from "./RegisterNewUserData";
 
-const Root = ({ store, history }) => {
+const Root = ({ history, store }) => {
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <AccountData />
+        <NewBlogPost />
         <hr />
         <Switch>
-          <Route path="/" exact component={BlogPostsList} />
-          <Route path="/BlogPost/:id" exact component={BlogPostData} />
-          <Route path="/Author/:id" exact component={AuthorData} />
-          <Route path="/Register" exact component={RegisterNewUserData} />
+          <Route component={BlogPostsList} exact path="/" />
+          <Route component={NewBlogPostData} exact path="/NewBlogPost" />
+          <Route component={BlogPostData} exact path="/BlogPost/:id" />
+          <Route component={AuthorData} exact path="/Author/:id" />
+          <Route component={RegisterNewUserData} exact path="/Register" />
         </Switch>
       </ConnectedRouter>
     </Provider>

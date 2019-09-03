@@ -26,6 +26,11 @@ class BlogPostData extends Component {
     requestBlogPost(id);
   }
 
+  componentWillUnmount() {
+    const { resetBlogPost } = this.props;
+    resetBlogPost();
+  }
+
   render() {
     const {
       blogPost,
@@ -39,7 +44,7 @@ class BlogPostData extends Component {
       isNotFound,
       isOwner,
       isSaving,
-      saveBlogPost
+      updateBlogPost
     } = this.props;
     if (isLoading) {
       return <p>Loading...</p>;
@@ -50,7 +55,6 @@ class BlogPostData extends Component {
     if (error.isError) {
       return <Error text={error.message} />;
     }
-
     return (
       <div>
         {!isEditing && (
@@ -65,9 +69,9 @@ class BlogPostData extends Component {
             blogPost={blogPost}
             cancelBlogPostChanges={cancelBlogPostEditing}
             id={id}
-            isOwner={isOwner}
             isSaving={isSaving}
-            saveBlogPost={saveBlogPost}
+            saveBlogPost={updateBlogPost}
+            showCancel={true}
           />
         )}
         <BlogPostCommentsData blogPostId={blogPost.id} />

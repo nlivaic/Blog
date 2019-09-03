@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 
 namespace Blog.Models.ViewModels
 {
@@ -8,7 +9,7 @@ namespace Blog.Models.ViewModels
         {
             Id = id;
             Title = title;
-            SummaryText = $"{text.Substring(0, 10)}...";
+            SummaryText = $"{Regex.Match(text, "^(.){1,10}").Value}...";
             Author = author;
         }
 

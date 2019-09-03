@@ -1,13 +1,21 @@
 import { handleHttpError } from "./HttpError";
 
-export const getBlogPost = id => {
-  return fetch(`/api/BlogPost/${id}`)
+export const getBlogPost = id =>
+  fetch(`/api/BlogPost/${id}`)
     .then(handleHttpError)
     .then(response => response.json());
-};
 
-export const updateBlogPost = blogPost => {
-  return fetch(`/api/BlogPost/${blogPost.id}`, {
+export const createBlogPost = blogPost =>
+  fetch("/api/BlogPost", {
+    body: JSON.stringify(blogPost),
+    headers: { "Content-Type": "application/json" },
+    method: "POST"
+  })
+    .then(handleHttpError)
+    .then(response => response.json());
+
+export const updateBlogPost = blogPost =>
+  fetch(`/api/BlogPost/${blogPost.id}`, {
     body: JSON.stringify(blogPost),
     headers: { "Content-Type": "application/json" },
     method: "PUT"
@@ -20,4 +28,3 @@ export const updateBlogPost = blogPost => {
         return response;
       }
     });
-};

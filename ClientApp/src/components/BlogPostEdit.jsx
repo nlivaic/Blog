@@ -1,28 +1,38 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 
 class BlogPostEdit extends Component {
   state = {
     text: this.props.blogPost.text,
     title: this.props.blogPost.title
   };
+
+  componentDidUpdate(prevProps) {
+    if (this.props.blogPost.title !== prevProps.blogPost.title) {
+      this.setState({ title: this.props.blogPost.title });
+    }
+    if (this.props.blogPost.text !== prevProps.blogPost.text) {
+      this.setState({ text: this.props.blogPost.text });
+    }
+  }
+
   render() {
     const {
-      blogPost,
       cancelBlogPostChanges,
       id,
       isSaving,
-      saveBlogPost
+      saveBlogPost,
+      showCancel
     } = this.props;
     return (
       <div>
-        Now editing: Title:{" "}
+        Title:
         <input
           onChange={e => this.setState({ title: e.target.value })}
           type="text"
           value={this.state.title}
         />
-        <Link to={`/Author/${blogPost.author.id}`}>{blogPost.author.name}</Link>
+        <br />
+        Text:
         <input
           onChange={e => {
             this.setState({ text: e.target.value });
@@ -30,6 +40,7 @@ class BlogPostEdit extends Component {
           type="textarea"
           value={this.state.text}
         />
+        <br />
         {isSaving && "Saving..."}
         {!isSaving && (
           <button
@@ -42,7 +53,7 @@ class BlogPostEdit extends Component {
             Save
           </button>
         )}
-        <button onClick={cancelBlogPostChanges}>Cancel</button>
+        {showCancel && <button onClick={cancelBlogPostChanges}>Cancel</button>}
       </div>
     );
   }

@@ -1,3 +1,4 @@
+import { push } from "connected-react-router";
 import { combineReducers } from "redux";
 import * as api from "../api/blogPost";
 
@@ -6,8 +7,11 @@ const receiveBlogPostType = "RECEIVE_BLOG_POST";
 const notFoundBlogPostType = "NOT_FOUND_BLOG_POST";
 const readBlogPostType = "READ_BLOG_POST";
 const editBlogPostType = "EDIT_BLOG_POST";
-const requestSaveBlogPostType = "REQUEST_SAVE_BLOG_POST";
-const receiveSaveBlogPostType = "RECEIVE_SAVE_BLOG_POST";
+const requestUpdateBlogPostType = "REQUEST_UPDATE_BLOG_POST";
+const receiveUpdateBlogPostType = "RECEIVE_UPDATE_BLOG_POST";
+const requestCreateBlogPostType = "REQUEST_CREATE_BLOG_POST";
+const receiveCreateBlogPostType = "RECEIVE_CREATE_BLOG_POST";
+const resetBlogPostType = "RESET_BLOG_POST";
 const errorType = "ERROR_BLOG_POST";
 const initialState = {
   author: { id: "", name: "" },
@@ -19,6 +23,18 @@ const initialErrorState = { isError: false, message: "" };
 export const actionCreators = {
   cancelBlogPostEditing: () => dispatch => {
     dispatch({ type: readBlogPostType });
+  },
+  createBlogPost: blogPost => dispatch => {
+    dispatch({ type: requestCreateBlogPostType });
+    api
+      .createBlogPost(blogPost)
+      .then(data => {
+        dispatch({ type: receiveCreateBlogPostType });
+        return data;
+      })
+      .then(data => {
+        dispatch(push(`/BlogPost/${data.id}`));
+      });
   },
   editBlogPost: () => dispatch => {
     dispatch({ type: editBlogPostType });
@@ -44,11 +60,16 @@ export const actionCreators = {
         }
       });
   },
-  saveBlogPost: blogPost => dispatch => {
-    dispatch({ type: requestSaveBlogPostType });
+  resetBlogPost: () => dispatch => {
+    dispatch({ type: resetBlogPostType });
+  },
+  updateBlogPost: blogPost => dispatch => {
+    dispatch({ type: requestUpdateBlogPostType });
     api
       .updateBlogPost(blogPost)
-      .then(data => dispatch({ type: receiveSaveBlogPostType }));
+      .then(() =>
+        dispatch({ data: blogPost, type: receiveUpdateBlogPostType })
+      );
   }
 };
 
@@ -56,6 +77,10 @@ const blogPost = (state = initialState, action) => {
   switch (action.type) {
     case receiveBlogPostType:
       return action.response;
+    case receiveUpdateBlogPostType:
+      return { ...state, text: action.data.text, title: action.data.title };
+    case resetBlogPostType:
+      return initialState;
     default:
       return state;
   }
@@ -98,9 +123,11 @@ const isEditing = (state = false, action) => {
 
 const isRequestingSaveBlogPost = (state = false, action) => {
   switch (action.type) {
-    case receiveSaveBlogPostType:
+    case receiveCreateBlogPostType:
+    case receiveUpdateBlogPostType:
       return false;
-    case requestSaveBlogPostType:
+    case requestCreateBlogPostType:
+    case requestUpdateBlogPostType:
       return true;
     default:
       return state;
