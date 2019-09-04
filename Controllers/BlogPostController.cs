@@ -21,7 +21,6 @@ namespace Blog.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-
             return Ok(_ctx.BlogPosts.Include(bp => bp.Author).Select(bp => new BlogPostSummary(bp.Id, bp.Title, bp.Text, bp.Author)).ToList());
         }
 
@@ -31,7 +30,9 @@ namespace Blog.Controllers
             var currentUserId = HttpContext.User.FindFirst("authorId")?.Value;
             BlogPost blogPost = _ctx.BlogPosts.Include(bp => bp.Author).SingleOrDefault(bp => bp.Id == id);
             if (blogPost == null)
+            {
                 return NotFound();
+            }
             bool isCurrentUserAuthor = string.IsNullOrEmpty(currentUserId) ? false : new Guid(currentUserId).Equals(blogPost.AuthorId);
             return Ok(BlogPostResponse.FromBlogPost(blogPost, isCurrentUserAuthor));
         }
@@ -54,17 +55,35 @@ namespace Blog.Controllers
             BlogPost blogPost = _ctx.BlogPosts.SingleOrDefault(bp => bp.Id == id);
             if (blogPost == null)
             {
-                return BadRequest($"Blog Post not found.");
+                return NotFound("Blog Post not found.");
             }
             var authorId = new Guid(HttpContext.User.FindFirst("authorId").Value);
             if (blogPost.AuthorId != authorId)
             {
-                return BadRequest("Authenticated user cannot update blog post.");
+                return BadRequest("Authenticated user cannot update this blog post.");
             }
             blogPost.Update(blogPostRequest.Title, blogPostRequest.Text);
             await _ctx.SaveChangesAsync();
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        [Authorize(Policy = "authorPolicy")]
+        public async Task<IActionResult> Delete([FromRoute]Guid id)
+        {
+            var authorId = new Guid(HttpContext.User.FindFirst("authorId").Value);
+            var blogPost = _ctx.BlogPosts.SingleOrDefault(bp => bp.Id == id);
+            if (blogPost == null)
+            {
+                return NotFound("Blog Post not found");
+            }
+            if (blogPost.AuthorId != authorId)
+            {
+                return BadRequest("Authenticated user cannot delete this blog post.");
+            }
+            _ctx.BlogPosts.Remove(blogPost);
+            await _ctx.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
