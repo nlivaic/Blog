@@ -28,3 +28,8 @@ export const updateBlogPost = blogPost =>
         return response;
       }
     });
+
+export const deleteBlogPost = id =>
+  fetch(`/api/BlogPost/${id}`, {
+    method: "DELETE"
+  }).then(handleHttpError);

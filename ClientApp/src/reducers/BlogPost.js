@@ -11,6 +11,8 @@ const requestUpdateBlogPostType = "REQUEST_UPDATE_BLOG_POST";
 const receiveUpdateBlogPostType = "RECEIVE_UPDATE_BLOG_POST";
 const requestCreateBlogPostType = "REQUEST_CREATE_BLOG_POST";
 const receiveCreateBlogPostType = "RECEIVE_CREATE_BLOG_POST";
+const requestDeleteBlogPostType = "REQUEST_DELETE_BLOG_POST";
+const receiveDeleteBlogPostType = "RECEIVE_DELETE_BLOG_POST";
 const resetBlogPostType = "RESET_BLOG_POST";
 const errorType = "ERROR_BLOG_POST";
 const initialState = {
@@ -35,6 +37,13 @@ export const actionCreators = {
       .then(data => {
         dispatch(push(`/BlogPost/${data.id}`));
       });
+  },
+  deleteBlogPost: id => dispatch => {
+    dispatch({ type: requestDeleteBlogPostType });
+    api
+      .deleteBlogPost(id)
+      .then(() => dispatch({ type: receiveDeleteBlogPostType }))
+      .then(() => dispatch(push("/")));
   },
   editBlogPost: () => dispatch => {
     dispatch({ type: editBlogPostType });
@@ -134,6 +143,17 @@ const isRequestingSaveBlogPost = (state = false, action) => {
   }
 };
 
+const isDeleting = (state = false, action) => {
+  switch (action.type) {
+    case receiveDeleteBlogPostType:
+      return false;
+    case requestDeleteBlogPostType:
+      return true;
+    default:
+      return state;
+  }
+};
+
 const error = (state = initialErrorState, action) => {
   switch (action.type) {
     case errorType:
@@ -151,6 +171,7 @@ const error = (state = initialErrorState, action) => {
 export default combineReducers({
   blogPost,
   error,
+  isDeleting,
   isEditing,
   isLoading,
   isNotFound,
@@ -172,3 +193,5 @@ export const getIsEditing = state => state.isEditing;
 
 export const getIsRequestingSaveBlogPost = state =>
   state.isRequestingSaveBlogPost;
+
+export const getIsDeleting = state => state.isDeleting;

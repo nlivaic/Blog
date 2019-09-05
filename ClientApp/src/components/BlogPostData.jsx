@@ -7,6 +7,7 @@ import {
   getBlogPost,
   getBlogPostComments,
   getBlogPostError,
+  getBlogPostIsDeleting,
   getBlogPostIsEditing,
   getBlogPostIsLoading,
   getBlogPostIsNotFound,
@@ -35,10 +36,12 @@ class BlogPostData extends Component {
     const {
       blogPost,
       cancelBlogPostEditing,
+      deleteBlogPost,
       editBlogPost,
       error,
       goBack,
       id,
+      isDeleting,
       isEditing,
       isLoading,
       isNotFound,
@@ -74,6 +77,10 @@ class BlogPostData extends Component {
             showCancel={true}
           />
         )}
+        {isOwner && !isDeleting && (
+          <button onClick={() => deleteBlogPost(id)}>Delete</button>
+        )}
+        {isDeleting && <span>Deleting...</span>}
         <BlogPostCommentsData blogPostId={blogPost.id} />
         <br />
         <button onClick={() => goBack()}>Back</button>
@@ -88,6 +95,7 @@ const mapStateToProps = (state, ownProps) => {
     comments: getBlogPostComments(state),
     error: getBlogPostError(state),
     id: ownProps.match.params.id,
+    isDeleting: getBlogPostIsDeleting(state),
     isEditing: getBlogPostIsEditing(state),
     isLoading: getBlogPostIsLoading(state),
     isNotFound: getBlogPostIsNotFound(state),

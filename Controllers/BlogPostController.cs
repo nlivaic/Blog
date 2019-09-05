@@ -60,7 +60,7 @@ namespace Blog.Controllers
             var authorId = new Guid(HttpContext.User.FindFirst("authorId").Value);
             if (blogPost.AuthorId != authorId)
             {
-                return BadRequest("Authenticated user cannot update this blog post.");
+                return Forbid("Authenticated user cannot update this blog post.");
             }
             blogPost.Update(blogPostRequest.Title, blogPostRequest.Text);
             await _ctx.SaveChangesAsync();
@@ -79,7 +79,7 @@ namespace Blog.Controllers
             }
             if (blogPost.AuthorId != authorId)
             {
-                return BadRequest("Authenticated user cannot delete this blog post.");
+                return Forbid("Authenticated user cannot delete this blog post.");
             }
             _ctx.BlogPosts.Remove(blogPost);
             await _ctx.SaveChangesAsync();

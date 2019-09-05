@@ -43,6 +43,9 @@ export const getBlogPostIsEditing = state =>
 export const getIsRequestingSaveBlogPost = state =>
   fromBlogPost.getIsRequestingSaveBlogPost(state.blogPost);
 
+export const getBlogPostIsDeleting = state =>
+  fromBlogPost.getIsDeleting(state.blogPost);
+
 // Top-level selectors - Blog Post Comments
 export const getBlogPostComments = state =>
   fromBlogPostComments.getComments(state.blogPostComments);

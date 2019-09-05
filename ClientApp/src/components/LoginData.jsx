@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  getAccountLogin,
-  getAccountIsLoggingIn,
-  getAccountIsLoggingOut
-} from "../reducers";
 import { bindActionCreators } from "redux";
+import {
+  getAccountIsLoggingIn,
+  getAccountIsLoggingOut,
+  getAccountLogin
+} from "../reducers";
 import { actionCreators } from "../reducers/Account";
 import Login from "./Login";
 
@@ -14,8 +14,8 @@ class LoginData extends Component {
     const {
       accountLogin,
       isLoggingIn,
-      login,
       isLoggingOut,
+      login,
       logout
     } = this.props;
     if (isLoggingIn) return <div>Logging in...</div>;
@@ -23,7 +23,8 @@ class LoginData extends Component {
     if (accountLogin.isLoggedIn) {
       return (
         <div>
-          Hi {accountLogin.name}.<button onClick={() => logout()} />
+          Hi {accountLogin.name}.
+          <button onClick={() => logout()}>Logout</button>
         </div>
       );
     }

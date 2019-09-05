@@ -55,13 +55,13 @@
     ☐ Claims
         ☐ Type: "Author", "Admin"
     ☐ Policy: "AuthorType", "AdminType"
-    ☐ How to authorize based on claims?
-        ☐ [Authorize(Policy("AuthorType"))]
-☐ Turn all authors into identity users.
-    ☐ Find a way to map identity users onto authors. AutoMapper?
-☐ Edit blog posts
-    ☐ Create entry fields when authenticated.
-☐ If you try to post/put while w/o cookie, you will get a 401 back. This causes HttpError to be thrown by your api.js, but this is never caught. Fix this by present a pleasant message.
+    ✔ How to authorize based on claims? @done (2019-9-4 23:08:50)
+        ✔ [Authorize(Policy("AuthorType"))] @done (2019-9-4 23:08:49)
+✘ Turn all authors into identity users. @cancelled (2019-9-4 23:08:54)
+    ✘ Find a way to map identity users onto authors. AutoMapper? @cancelled (2019-9-4 23:08:54)
+✔ Edit blog posts @done (2019-9-4 22:08:02)
+    ✔ Create entry fields when authenticated. @done (2019-9-4 22:08:01)
+☐ If you try to post/put while w/o cookie, you will get a 401 back. This causes HttpError to be thrown by your api.js, but this is never caught. Fix this by presenting a pleasant message.
 ☐ Često moramo ručno vaditi logiranog usera i njegov Id. Možemo to nekako preko Model Bindinga automatizirati?
 ☐ Security
     ✔ HTTPS @done (2019-8-5 14:08:18)
