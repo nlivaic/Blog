@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Blog.Models;
 using Blog.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
+using Blog.Security;
 
 namespace Blog.Controllers
 {
@@ -13,28 +15,55 @@ namespace Blog.Controllers
     public class BlogPostController : ControllerBase
     {
         public BlogContext _ctx { get; set; }
-        public BlogPostController(BlogContext ctx)
+        private readonly IDataProtectionProvider _protectionProvider;
+        private readonly PurposeStringConstants _purposeStrings;
+        private readonly IDataProtector _blogPostProtector;
+        private readonly IDataProtector _authorProtector;
+
+        public BlogPostController(BlogContext ctx, IDataProtectionProvider protectionProvider, PurposeStringConstants purposeStrings)
         {
             _ctx = ctx;
+            _protectionProvider = protectionProvider;
+            _purposeStrings = purposeStrings;
+            _blogPostProtector = _protectionProvider.CreateProtector(_purposeStrings.BlogPostId);
+            _authorProtector = _protectionProvider.CreateProtector(_purposeStrings.AuthorId);
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_ctx.BlogPosts.Include(bp => bp.Author).Select(bp => new BlogPostSummary(bp.Id, bp.Title, bp.Text, bp.Author)).ToList());
+            // return Ok(_ctx.BlogPosts.Include(bp => bp.Author).Select(bp => new BlogPostSummary(bp.Id, bp.Title, bp.Text, bp.Author)).ToList());
+            return Ok(
+                _ctx.BlogPosts
+                    .Include(bp => bp.Author)
+                    .Select(bp => new BlogPostSummary(
+                        _blogPostProtector.Protect(bp.Id.ToString()),
+                        bp.Title,
+                        bp.Text,
+                        new AuthorViewModel(
+                            _authorProtector.Protect(bp.Author.Id.ToString()),
+                            bp.Author.Name)
+                        )).ToList());
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get([FromRoute]Guid id)
+        public IActionResult Get([FromRoute]string id)
         {
+            Guid blogPostId = new Guid(_blogPostProtector.Unprotect(id));
             var currentUserId = HttpContext.User.FindFirst("authorId")?.Value;
-            BlogPost blogPost = _ctx.BlogPosts.Include(bp => bp.Author).SingleOrDefault(bp => bp.Id == id);
+            BlogPost blogPost = _ctx.BlogPosts.Include(bp => bp.Author).SingleOrDefault(bp => bp.Id == blogPostId);
             if (blogPost == null)
             {
                 return NotFound();
             }
             bool isCurrentUserAuthor = string.IsNullOrEmpty(currentUserId) ? false : new Guid(currentUserId).Equals(blogPost.AuthorId);
-            return Ok(BlogPostResponse.FromBlogPost(blogPost, isCurrentUserAuthor));
+            return Ok(BlogPostResponse.FromBlogPost(
+                _blogPostProtector.Protect(blogPostId.ToString()),
+                blogPost,
+                new AuthorViewModel(
+                    _authorProtector.Protect(blogPost.Author.Id.ToString()),
+                    blogPost.Author.Name),
+                 isCurrentUserAuthor));
         }
 
         [HttpPost]

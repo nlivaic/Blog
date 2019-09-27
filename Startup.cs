@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Net;
 using System.Threading.Tasks;
 using System;
+using Blog.Security;
 
 namespace Blog
 {
@@ -74,6 +75,9 @@ namespace Blog
                 }
             });
             services.AddAuthorization(options => options.AddPolicy("authorPolicy", policy => policy.RequireClaim("userType", "author")));
+            services.AddDataProtection();
+
+            services.AddSingleton<PurposeStringConstants>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
