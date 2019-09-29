@@ -4,5 +4,6 @@ namespace Blog.Security
     {
         public string BlogPostId => "Blog.Models.BlogPost.Id";
         public string AuthorId => "Blog.Models.Author.Id";
+        public string CommentId => "Blog.Models.Comment.Id";
     }
 }

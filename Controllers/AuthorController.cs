@@ -24,8 +24,8 @@ namespace Blog.Controllers
             _ctx = ctx;
             _protectionProvider = protectionProvider;
             _purposeStrings = purposeStrings;
-            _blogPostProtector = _protectionProvider.CreateProtector(_purposeStrings.BlogPostId);
-            _authorProtector = _protectionProvider.CreateProtector(_purposeStrings.AuthorId);
+            _blogPostProtector = _protectionProvider.CreateProtector(purposeStrings.BlogPostId);
+            _authorProtector = _protectionProvider.CreateProtector(purposeStrings.AuthorId);
         }
 
         [HttpGet("{id}")]
