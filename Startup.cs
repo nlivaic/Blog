@@ -54,6 +54,7 @@ namespace Blog
             {
                 options.Events = new CookieAuthenticationEvents
                 {
+                    // If the framework tries to redirect, override and send 401.
                     OnRedirectToLogin = ctx =>
                     {
                         if (ctx.Request.Path.StartsWithSegments("/api"))
