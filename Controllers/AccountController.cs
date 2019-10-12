@@ -7,6 +7,7 @@ using Blog.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Security;
 
 namespace Blog.Controllers
 {
@@ -16,12 +17,14 @@ namespace Blog.Controllers
         private readonly UserManager<BlogIdentityUser> _userManager;
         private readonly SignInManager<BlogIdentityUser> _signInManager;
         private readonly BlogContext _blogContext;
+        private readonly IXsrfService _xsrfService;
 
-        public AccountController(UserManager<BlogIdentityUser> userManager, SignInManager<BlogIdentityUser> signInManager, BlogContext blogContext)
+        public AccountController(UserManager<BlogIdentityUser> userManager, SignInManager<BlogIdentityUser> signInManager, BlogContext blogContext, IXsrfService xsrfService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _blogContext = blogContext;
+            _xsrfService = xsrfService;
         }
 
         [Route("Register")]
@@ -59,8 +62,14 @@ namespace Blog.Controllers
                 return BadRequest(new LoginResponse(false, "Erroneous credentials."));
             }
             var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, isPersistent: true, lockoutOnFailure: false);
+
             if (result.Succeeded)
             {
+                var appUser = await _userManager.FindByEmailAsync(loginModel.Email);
+                var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
+                HttpContext.User = claimsPrincipal;
+                _xsrfService.GetAndStoreToken(HttpContext);
+                // await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claimsPrincipal.Claims, "Cookies", loginModel.Email, string.Empty)));
                 return Ok(new LoginResponse(true, _userManager.Users.First().Name, "Logged in successfully."));
             }
             else
@@ -71,6 +80,7 @@ namespace Blog.Controllers
 
         [Route("Logout")]
         [Authorize]
+        [ValidateAntiForgeryToken]
         [HttpGet]
         public async Task<IActionResult> Logout()
         {

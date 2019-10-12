@@ -1,3 +1,4 @@
+import { xsrfToken } from "../cookies";
 import { handleHttpError } from "./HttpError";
 
 export const getBlogPost = id =>
@@ -8,7 +9,10 @@ export const getBlogPost = id =>
 export const createBlogPost = blogPost =>
   fetch("/api/BlogPost", {
     body: JSON.stringify(blogPost),
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": xsrfToken()
+    },
     method: "POST"
   })
     .then(handleHttpError)
@@ -17,7 +21,10 @@ export const createBlogPost = blogPost =>
 export const updateBlogPost = blogPost =>
   fetch(`/api/BlogPost/${blogPost.id}`, {
     body: JSON.stringify(blogPost),
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": xsrfToken()
+    },
     method: "PUT"
   })
     .then(handleHttpError)
@@ -31,5 +38,6 @@ export const updateBlogPost = blogPost =>
 
 export const deleteBlogPost = id =>
   fetch(`/api/BlogPost/${id}`, {
+    headers: { "X-CSRF-TOKEN": xsrfToken() },
     method: "DELETE"
   }).then(handleHttpError);

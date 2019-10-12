@@ -25,5 +25,17 @@ namespace Blog.Models.ViewModels
             };
         }
 
+        public static BlogPostResponse FromBlogPost(string id, BlogPost blogPost, bool isOwner)
+        {
+            return new BlogPostResponse
+            {
+                Id = id,
+                Title = blogPost.Title,
+                Text = blogPost.Text,
+                Comments = blogPost.Comments,
+                IsOwner = isOwner
+            };
+        }
+
     }
 }

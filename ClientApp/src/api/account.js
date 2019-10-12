@@ -2,9 +2,9 @@ import { handleHttpError } from "./HttpError";
 
 export const register = registerCredentials => {
   return fetch("/api/account/register", {
-    method: "POST",
     body: JSON.stringify(registerCredentials),
-    headers: { "Content-Type": "application/json" }
+    headers: { "Content-Type": "application/json" },
+    method: "POST"
   })
     .then(handleHttpError)
     .then(response => response.json());
@@ -12,9 +12,9 @@ export const register = registerCredentials => {
 
 export const login = loginCredentials => {
   return fetch("/api/account/login", {
-    method: "POST",
     body: JSON.stringify(loginCredentials),
-    headers: { "Content-Type": "application/json" }
+    headers: { "Content-Type": "application/json" },
+    method: "POST"
   })
     .then(handleHttpError)
     .then(response => response.json());

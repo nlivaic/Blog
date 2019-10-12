@@ -14,6 +14,10 @@ using System.Net;
 using System.Threading.Tasks;
 using System;
 using Blog.Security;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Antiforgery;
+using Security;
 
 namespace Blog
 {
@@ -50,6 +54,11 @@ namespace Blog
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
             services.AddAuthentication();
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie.Name = "CSRF-TOKEN";
+                options.HeaderName = "X-CSRF-TOKEN";
+            });
             services.ConfigureApplicationCookie(options =>
             {
                 options.Events = new CookieAuthenticationEvents
@@ -79,6 +88,7 @@ namespace Blog
             services.AddDataProtection();
 
             services.AddSingleton<PurposeStringConstants>();
+            services.AddSingleton<IXsrfService, XsrfService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -115,6 +125,7 @@ namespace Blog
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
         }
     }
 }

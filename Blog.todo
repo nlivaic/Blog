@@ -38,6 +38,11 @@
         ✔ Test this. @done (2019-8-2 22:51:31)
 ✔ Clean up various unused things. Look at compile warnings in browser console. @done (2019-8-2 22:51:33)
 ☐ Potencijalan case: enable logging na Identity Db Contextu i vidi da li se već authenticated user povlači pri svakom requestu iz baze? Kako se onda claimovi u cookieju refreshaju? Kako uopće izgleda i inicijalna autentifikacija usera?
+☐ Postman request:HTTPS se ne validira?
+☐ Kad se sjebe neki request i pukne HttpError na klijentu, i onda odem na "Back", i dalje traje error. Nije da se izvršava React ruta.
+✔ [ValidateAntiforgeryToken] na sve POST/PUT/DELETE actione. @done (2019-10-9 22:22:16)
+☐ CRUD comments.
+☐ Delete blog post redirecta na "/", a trebao bi na zadnju lokaciju u historyju.
 ☐ Paging
 ✔ File naming. @done (2019-9-27 22:58:53)
     ✔ All JS files should be camelCase. @done (2019-9-27 22:58:54)
@@ -53,9 +58,9 @@
     ☐ Two factor authentication
     ☐ Lockout
 ☐ Authorization
-    ☐ Claims
-        ☐ Type: "Author", "Admin"
-    ☐ Policy: "AuthorType", "AdminType"
+    ✔ Claims @done (2019-10-9 22:24:07)
+        ✔ Type: "Author", "Admin" @done (2019-10-9 22:24:06)
+    ✔ Policy: "AuthorType", "AdminType" @done (2019-10-9 22:24:06)
     ✔ How to authorize based on claims? @done (2019-9-4 23:08:50)
         ✔ [Authorize(Policy("AuthorType"))] @done (2019-9-4 23:08:49)
 ✘ Turn all authors into identity users. @cancelled (2019-9-4 23:08:54)
@@ -63,16 +68,16 @@
 ✔ Edit blog posts @done (2019-9-4 22:08:02)
     ✔ Create entry fields when authenticated. @done (2019-9-4 22:08:01)
 ☐ If you try to post/put while w/o cookie, you will get a 401 back. This causes HttpError to be thrown by your api.js, but this is never caught. Fix this by presenting a pleasant message.
-☐ Često moramo ručno vaditi logiranog usera i njegov Id. Možemo to nekako preko Model Bindinga automatizirati?
+✘ Često moramo ručno vaditi logiranog usera i njegov Id. Možemo to nekako preko Model Bindinga automatizirati? @cancelled (2019-10-9 22:24:24)
 ☐ Security
     ✔ HTTPS @done (2019-8-5 14:08:18)
     ☐ DPAPI, encryption
         ☐ Can I reuse provided ID or should I create a new one?
     ☐ HSTS
         ☐ Preload HSTS
-    ☐ XSRF
-        ☐ This is a cookie exploit.
-        ☐ After establishing login and authentication, see if it is a factor in React-WebAPI communication.
+    ✔ XSRF @done (2019-10-9 22:24:38)
+        ✔ This is a cookie exploit. @done (2019-10-9 22:24:39)
+        ✔ After establishing login and authentication, see if it is a factor in React-WebAPI communication. @done (2019-10-9 22:24:39)
     ☐ XSS
         ☐ Sanitize outputs that originally came from the front-end.
         ☐ react-sanitized-html

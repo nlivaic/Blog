@@ -32,7 +32,6 @@ namespace Blog.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            // return Ok(_ctx.BlogPosts.Include(bp => bp.Author).Select(bp => new BlogPostSummary(bp.Id, bp.Title, bp.Text, bp.Author)).ToList());
             return Ok(
                 _ctx.BlogPosts
                     .Include(bp => bp.Author)
@@ -67,6 +66,7 @@ namespace Blog.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize(Policy = "authorPolicy")]
         public async Task<IActionResult> Post([FromBody]BlogPostRequest blogPostRequest)
         {
@@ -74,10 +74,16 @@ namespace Blog.Controllers
             var blogPost = blogPostRequest.CreateBlogPost(authorId);
             await _ctx.BlogPosts.AddAsync(blogPost);
             await _ctx.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = blogPost.Id }, blogPost);
+            var blogPostResponse = BlogPostResponse.FromBlogPost(
+                _blogPostProtector.Protect(blogPost.Id.ToString()),
+                blogPost,
+                true
+            );
+            return CreatedAtAction(nameof(Get), new { id = _blogPostProtector.Protect(blogPost.Id.ToString()) }, blogPostResponse);
         }
 
         [HttpPut("{id}")]
+        [ValidateAntiForgeryToken]
         [Authorize(Policy = "authorPolicy")]
         public async Task<IActionResult> Put([FromRoute]Guid id, [FromBody]BlogPostRequest blogPostRequest)
         {
@@ -97,11 +103,12 @@ namespace Blog.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ValidateAntiForgeryToken]
         [Authorize(Policy = "authorPolicy")]
-        public async Task<IActionResult> Delete([FromRoute]Guid id)
+        public async Task<IActionResult> Delete([FromRoute]string id)
         {
             var authorId = new Guid(HttpContext.User.FindFirst("authorId").Value);
-            var blogPost = _ctx.BlogPosts.SingleOrDefault(bp => bp.Id == id);
+            var blogPost = _ctx.BlogPosts.SingleOrDefault(bp => bp.Id == new Guid(_blogPostProtector.Unprotect(id)));
             if (blogPost == null)
             {
                 return NotFound("Blog Post not found");

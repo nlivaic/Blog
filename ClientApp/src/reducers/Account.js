@@ -12,23 +12,23 @@ const initialRegistrationState = { isRegistered: false, message: "" };
 const initialLoginState = { isLoggedIn: false, message: "" };
 
 export const actionCreators = {
-  register: registerCredentials => dispatch => {
-    dispatch({ type: requestRegistrationType });
-    api.register(registerCredentials).then(response => {
-      dispatch({ type: receiveRegistrationType, response });
-    });
-  },
   login: loginCredentials => dispatch => {
     dispatch({ type: requestLoginType });
     api
       .login(loginCredentials)
-      .then(response => dispatch({ type: receiveLoginType, response }));
+      .then(response => dispatch({ response, type: receiveLoginType }));
   },
   logout: () => dispatch => {
     dispatch({ type: requestLogoutType });
     api
       .logout()
-      .then(response => dispatch({ type: receiveLogoutType, response }));
+      .then(response => dispatch({ response, type: receiveLogoutType }));
+  },
+  register: registerCredentials => dispatch => {
+    dispatch({ type: requestRegistrationType });
+    api.register(registerCredentials).then(response => {
+      dispatch({ response, type: receiveRegistrationType });
+    });
   }
 };
 
@@ -43,10 +43,10 @@ const registration = (state = initialRegistrationState, action) => {
 
 const isRegistering = (state = false, action) => {
   switch (action.type) {
-    case requestRegistrationType:
-      return true;
     case receiveRegistrationType:
       return false;
+    case requestRegistrationType:
+      return true;
     default:
       return state;
   }
@@ -64,10 +64,10 @@ const login = (state = initialLoginState, action) => {
 
 const isLoggingIn = (state = false, action) => {
   switch (action.type) {
-    case requestLoginType:
-      return true;
     case receiveLoginType:
       return false;
+    case requestLoginType:
+      return true;
     default:
       return state;
   }
@@ -75,21 +75,21 @@ const isLoggingIn = (state = false, action) => {
 
 const isLoggingOut = (state = false, action) => {
   switch (action.type) {
-    case requestLogoutType:
-      return true;
     case receiveLogoutType:
       return false;
+    case requestLogoutType:
+      return true;
     default:
       return state;
   }
 };
 
 export default combineReducers({
-  registration,
+  isLoggingIn,
+  isLoggingOut,
   isRegistering,
   login,
-  isLoggingIn,
-  isLoggingOut
+  registration
 });
 
 // Selectors
