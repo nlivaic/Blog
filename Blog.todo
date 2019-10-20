@@ -73,20 +73,22 @@
     ✔ HTTPS @done (2019-8-5 14:08:18)
     ✔ DPAPI, encryption @done (20. 10. 2019. 09:48:13)
     ☐ HSTS
-        ☐ Preload HSTS
+        ✘ Preload HSTS @cancelled (20. 10. 2019. 21:17:16)
     ✔ XSRF @done (2019-10-9 22:24:38)
         ✔ This is a cookie exploit. @done (2019-10-9 22:24:39)
         ✔ After establishing login and authentication, see if it is a factor in React-WebAPI communication. @done (2019-10-9 22:24:39)
     ☐ XSS
-        ☐ Sanitize outputs that originally came from the front-end - React does it itself to a certain extent.
+        ✔ Sanitize outputs that originally came from the front-end - React does it itself to a certain extent. @done (20. 10. 2019. 11:47:14)
         ☐ react-sanitized-html
-        ☐ Sanitize inputs like names etc... - strip HTML using HtmlSanitizer package for .NET
+        ✔ Sanitize inputs like names etc... - strip HTML using HtmlSanitizer package for .NET @done (20. 10. 2019. 11:47:21)
     ✔ Content-Security-Policy @done (19. 10. 2019. 18:07:55)
     ☐ Content-Security Policy and React
         ☐ Requires a more in-depth knowledge of React. Consult https://medium.com/@nrshahri/csp-cra-324dd83fe5ff.
     ✔ Click jacking - Xfo @done (19. 10. 2019. 19:06:05)
     ☐ npm security
-☐ Database connection string password - place in user secret store. Explore other possibilities.
+✔ Database connection string password - place in user secret store. Explore other possibilities. @done (20. 10. 2019. 11:49:03)
+    ✔ %APPDATA%\Microsoft\UserSecrets\<user_secrets_id>\secrets.json @done (20. 10. 2019. 11:49:00)
+    ✔ Add <UserSecretsId> to .csproj @done (20. 10. 2019. 11:48:59)
 ☐ Deployment
     ☐ Try out production React
     ☐ Try out production ASP.NET Core
