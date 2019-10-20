@@ -71,19 +71,20 @@
 ✘ Često moramo ručno vaditi logiranog usera i njegov Id. Možemo to nekako preko Model Bindinga automatizirati? @cancelled (2019-10-9 22:24:24)
 ☐ Security
     ✔ HTTPS @done (2019-8-5 14:08:18)
-    ☐ DPAPI, encryption
-        ☐ Can I reuse provided ID or should I create a new one?
+    ✔ DPAPI, encryption @done (20. 10. 2019. 09:48:13)
     ☐ HSTS
         ☐ Preload HSTS
     ✔ XSRF @done (2019-10-9 22:24:38)
         ✔ This is a cookie exploit. @done (2019-10-9 22:24:39)
         ✔ After establishing login and authentication, see if it is a factor in React-WebAPI communication. @done (2019-10-9 22:24:39)
     ☐ XSS
-        ☐ Sanitize outputs that originally came from the front-end.
+        ☐ Sanitize outputs that originally came from the front-end - React does it itself to a certain extent.
         ☐ react-sanitized-html
+        ☐ Sanitize inputs like names etc... - strip HTML using HtmlSanitizer package for .NET
+    ✔ Content-Security-Policy @done (19. 10. 2019. 18:07:55)
     ☐ Content-Security Policy and React
         ☐ Requires a more in-depth knowledge of React. Consult https://medium.com/@nrshahri/csp-cra-324dd83fe5ff.
-    ☐ Click jacking
+    ✔ Click jacking - Xfo @done (19. 10. 2019. 19:06:05)
     ☐ npm security
 ☐ Database connection string password - place in user secret store. Explore other possibilities.
 ☐ Deployment

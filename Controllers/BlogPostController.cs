@@ -8,23 +8,26 @@ using Blog.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Blog.Security;
+using Ganss.XSS;
 
 namespace Blog.Controllers
 {
     [Route("api/[controller]")]
     public class BlogPostController : ControllerBase
     {
-        public BlogContext _ctx { get; set; }
+        private readonly BlogContext _ctx;
         private readonly IDataProtectionProvider _protectionProvider;
         private readonly PurposeStringConstants _purposeStrings;
+        private readonly HtmlSanitizer _sanitizer;
         private readonly IDataProtector _blogPostProtector;
         private readonly IDataProtector _authorProtector;
 
-        public BlogPostController(BlogContext ctx, IDataProtectionProvider protectionProvider, PurposeStringConstants purposeStrings)
+        public BlogPostController(BlogContext ctx, IDataProtectionProvider protectionProvider, PurposeStringConstants purposeStrings, HtmlSanitizer sanitizer)
         {
             _ctx = ctx;
             _protectionProvider = protectionProvider;
             _purposeStrings = purposeStrings;
+            _sanitizer = sanitizer;
             _blogPostProtector = _protectionProvider.CreateProtector(_purposeStrings.BlogPostId);
             _authorProtector = _protectionProvider.CreateProtector(_purposeStrings.AuthorId);
         }
@@ -71,6 +74,8 @@ namespace Blog.Controllers
         public async Task<IActionResult> Post([FromBody]BlogPostRequest blogPostRequest)
         {
             var authorId = new Guid(HttpContext.User.FindFirst("authorId").Value);
+            blogPostRequest.Title = _sanitizer.Sanitize(blogPostRequest.Title); // Post value: <div onload=alert('xss')>Title</div>
+            blogPostRequest.Text = _sanitizer.Sanitize(blogPostRequest.Text);   // Post value: <script type="text/javascript">alert('text')</script>
             var blogPost = blogPostRequest.CreateBlogPost(authorId);
             await _ctx.BlogPosts.AddAsync(blogPost);
             await _ctx.SaveChangesAsync();

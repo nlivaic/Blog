@@ -14,17 +14,17 @@ using System.Net;
 using System.Threading.Tasks;
 using System;
 using Blog.Security;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using Microsoft.AspNetCore.Antiforgery;
 using Security;
+using System.Linq;
+using Microsoft.Extensions.Logging;
+using Ganss.XSS;
 
 namespace Blog
 {
     public class Startup
     {
-        public IConfiguration _configuration { get; }
-        public IHostingEnvironment _environment { get; }
+        private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _environment;
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
@@ -88,6 +88,7 @@ namespace Blog
             services.AddDataProtection();
 
             services.AddSingleton<PurposeStringConstants>();
+            services.AddSingleton<HtmlSanitizer>(new HtmlSanitizer());
             services.AddSingleton<IXsrfService, XsrfService>();
         }
 
@@ -105,7 +106,6 @@ namespace Blog
             }
 
             app.UseHttpsRedirection();
-            // app.UseStaticFiles();
             app.UseAuthentication();
             app.UseSpaStaticFiles();
 
@@ -116,6 +116,19 @@ namespace Blog
                     template: "{controller}/{action=Index}/{id?}");
             });
 
+            //app.UseStaticFiles();
+
+            app.UseWhen(
+                context => !context.Request.Path.StartsWithSegments("/api"),
+                appBuilder =>
+                {
+                    appBuilder.UseXfo(xfo => xfo.Deny());
+                    appBuilder.UseCsp(options => options
+                        .DefaultSources(s => s.Self())
+                        .ReportUris(r => r.Uris("/csp/violations")));
+                }
+            );
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
@@ -125,7 +138,6 @@ namespace Blog
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-
         }
     }
 }
