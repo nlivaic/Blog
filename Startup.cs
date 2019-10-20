@@ -102,9 +102,8 @@ namespace Blog
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
             }
-
+            app.UseHsts(hsts => hsts.MaxAge(days: 365));
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseSpaStaticFiles();
