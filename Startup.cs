@@ -107,6 +107,7 @@ namespace Blog
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseSpaStaticFiles();
+            app.UseCors(cors => cors.SetIsOriginAllowed(origin => origin == "https://localhost:6001"));
 
             app.UseMvc(routes =>
             {
