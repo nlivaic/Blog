@@ -85,6 +85,7 @@
     ☐ Content-Security Policy and React
         ☐ Requires a more in-depth knowledge of React. Consult https://medium.com/@nrshahri/csp-cra-324dd83fe5ff.
     ✔ Click jacking - Xfo @done (19. 10. 2019. 19:06:05)
+    ✔ CORS @done (20. 10. 2019. 22:53:16)
     ☐ npm security
 ✔ Database connection string password - place in user secret store. Explore other possibilities. @done (20. 10. 2019. 11:49:03)
     ✔ %APPDATA%\Microsoft\UserSecrets\<user_secrets_id>\secrets.json @done (20. 10. 2019. 11:49:00)
